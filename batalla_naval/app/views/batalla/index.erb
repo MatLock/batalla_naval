@@ -1,0 +1,158 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<!-- BOOTSTRAP -->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<!-- /BOOTSTRAP -->
+
+<script type="text/javascript">
+var visibleDiv = <%= session[:divResultVisible] %>
+
+
+$(document).ready(function() {
+
+	if (visibleDiv)
+		$("#alert").show();
+	else
+		$("#alert").hide();
+});
+
+
+</script>
+
+<style>
+.tablero{
+	width: 300px;
+	height: 300px;
+	border-radius: 39px 39px 39px 39px;
+	margin: 0 auto;
+}
+
+table.tablero td {
+ padding: 10px;
+}
+.agua {
+ background-image: url("../../img/ocean.jpg");
+}
+.hit {
+ background-image: url("../../img/hit.jpg");
+}
+.sink {
+ background-image: url("../../img/sink.jpg");
+}
+table.tablero td.b {
+  background-image: url("../../../public/img/ocean.jpg");
+}
+table.tablero td.t {
+  background-image: url("../../../public/img/ocean.jpg");
+}
+
+.divBox
+{
+    width: 100%;
+    height: 100%;
+}
+.divBox a
+{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+table, th, td {
+    border: 3px solid black;
+    border-collapse: collapse;
+ }
+
+
+
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="jumbotron">
+    <div class="row">
+	  <div class="col-md-4"><img src="../../../img/barco.png" alt="boat" height="200" width="200" ></div>
+	  <div class="col-md-6"><h1>Batalla Naval</h1><p>Ultima kata de la materia Ingenieria de Software</p></div>
+	</div>
+   </div>
+
+  <label for="exampleInputEmail1">Armar Tablero</label>
+ 
+  <form class="form-inline" method="POST" action="crear_tablero">
+	<div class="form-group">
+	  	 <%= csrf_token_field %>
+		 <label class="sr-only" for="exampleInputEmail3">Alto</label>
+		 <input class="form-control" id="boton_enviar" placeholder="Ancho" name="alto">
+		 <label class="sr-only" for="exampleInputEmail3">Ancho</label>
+		 <input class="form-control" id="boton_enviar" placeholder="Largo" name="ancho">
+	</div>
+	<button type="submit" class="btn btn-success" id="armar_tablero">Armar Tablero</button>
+   </form> 
+
+   <% if !session[:tablero].nil? %>
+
+  <label for="exampleInputEmail1">Las coordenadas deben ponerse con el siguiente formato: x:y. Ejemplo: 1:2</label> </br>
+  <label for="exampleInputEmail1">Agregar Barco</label>
+  <form class="form-inline" method="POST" action="agregar_barco">
+	
+	<div class="form-group">
+	  	 <%= csrf_token_field %>
+		 <label class="sr-only" for="exampleInputEmail3">Coordenadas</label>
+		 <input class="form-control" id="agregar_barco" placeholder="Coordenadas" name="coordenadas_agregar"></input>
+		 <input type="radio" name="checkLargo" value="largo">Largo?<br>
+	</div>
+	<button type="submit" class="btn btn-success" id="btnAgregarBarco">Agregar</button>
+	<%if @res_to_put_boat.eql?("HayBarco")%>
+		</br> 
+		<div class="alert alert-warning"><p> Ya existe un barco en esa coordenada</p></div>
+		
+	<%end%>
+    </form>
+
+	<label for="exampleInputEmail2">Verificar Celda</label>
+	<form class="form-inline" method="POST" action="verificar_celda">
+	<div class="form-group">
+	  	 <%= csrf_token_field %>
+		 <label class="sr-only" for="exampleInputEmail3">Coordenadas</label>
+		 <input class="form-control" id="VerificarCelda" placeholder="Coordenadas" name="coordenadas">
+	</div>
+	<button type="submit" class="btn btn-success" id="btnVerificarCelda">Verificar</button>
+</form>
+  <div id="disparar" style=" margin:0 auto;">
+	<form class="form-inline" method="POST" action="disparar">
+		<%= csrf_token_field %>
+	<label for="exampleInputEmail1">Disparar</label></br>
+		<div class="form-group">
+			<label class="sr-only" for="exampleInputEmail3">Coordenadas</label>
+			<input class="form-control" id="coordToShoot" placeholder="Coordenadas" name="coord_to_shoot">
+		</div>
+			<button type="submit" class="btn btn-danger" id="btnShoot">Disparar!</button>
+				
+		
+	</form>
+   </div>
+  <%end%>
+</div>
+<div id="alert" class="alert alert-info" style="text-aling:center;"><%= @res_to_shoot %></div>
+
+
+   <table class="tablero" name="tablero2">
+   		<%= @tabla %>
+   	<table>
+
+
+  
+		
+
+
+ 		
+</body>
+</html>

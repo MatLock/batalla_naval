@@ -1,118 +1,22 @@
+
 <!DOCTYPE html>
-<html  lang="en">
+<html lang="en-US">
 	<head>
     <meta charset="utf-8">
 	</head>
-	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-	<!-- BOOTSTRAP -->
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
 	<body>
-	<p>ancho: <%= session[:ancho] %></p>
-	<p>alto: <%= session[:alto] %></p>
 
-	<div>
-		<% if session[:tablero].nil? %>
-		<form class="form-inline" method="POST" action="crearTablero">
-			<%= csrf_token_field %>
-			 <div class="form-group">
-			 	<div>
-					<label for="exampleInputEmail3">Seleccione el tamaño del tablero</label>
-				</div>
-				<div>
-					<label for="exampleInputEmail3">ancho:</label>
-					<input class="form-control" type="text" name="ancho" placeholder="Ancho"/>
-					<label for="exampleInputEmail3">alto:</label>
-					<input type="text" name="alto" class="form-control" placeholder="Alto"/>
-			 	</div>
-			 <input class="btn btn-success" type="submit" value="enviar" id="crearTablero"/>
-			</div>
-		</form>
-		<% end %>
-	</div>
-	<br/>
-		<% if !session[:tablero].nil? %>
-		<form class="form-inline" method="POST" action="ponerBarco">
-			<%= csrf_token_field %>
-			<div class="form-group">
-				<label for="exampleInputEmail3"> Coloque su Barco :P </label>
-			</div>
-			<div>
-				<label for="exampleInputEmail3">nombre:</label>
-				<input  class="form-control" type="text" name="nombreBarco" id="nombreBarco"/>
-			</div>
-			<div>
-				<label for="exampleInputEmail3">Formato de coordenadas: '(x:y),(z:w)'</label><br/>
-			</div>
-			<div>	
-				<label for="exampleInputEmail3">coordenadas: </b>
-				<input type="text" name="coordenadas" id="coordenadas"/>
-			</div>
-			<div>
-				<label for="exampleInputEmail3">tamanio:</label>
-				<input type="text" name="tamanio" id="tamanio"/>
-			</div>
-			<input class="form-control" type="submit" value="Enviar Coordenadas" id="crearBarco"/>
-		</form>
-		<% end %>
-	<div>
-	<br/>
-    <div>
-    	<label for="exampleInputEmail3">Consulta de coordenadas</label><br>
-    	<form class="form-inline" method="POST" action="posicionVacia">
-			<%= csrf_token_field %>
-			<label for="exampleInputEmail3" >coordenadas: </label><input type="text" name="coord" id="coord"/>
-    		<input class="form-control" type="submit" value="Enviar Coordenadas" id="pregunta"/>
-    	</form>
-    		<label for="exampleInputEmail3"><%= @respuesta%></label> 
-    </div>
-    <br/><br/>
-    <div>
-    	<form class="form-inline" method="POST" action="dispararEn">
-			<%= csrf_token_field %>
-			<label for="exampleInputEmail3">Disparar en coordenadas:</label>
-			<input  class="form-control" type="text" name="coordDisparo" id="coordDisparo"/>
-    		<input  class="btn btn-success" type="submit" value="Disparar" id="disparo"/>
-    </div>
+	<h1>Hola</h1>
 
-	<div  align="center">
-		<% if !session[:tablero].nil? %>
-		<table border="1"  class="table table-striped">
-			<tr> Batalla Naval :D </th>
-			<% for i in 1..session[:alto].to_i %>
-			<tr>
-				<% for j in 1..session[:ancho].to_i %>
-				<td>
-					<label label for="exampleInputEmail3"><%= session[:tablero].mapa[i-1][j-1] %></label>
-				</td>
-				<% end %>
-			</tr>
-			<% end %>
-		<% end %>
-		</table>
-	<div>
+	<p>El parametro nombre vale: <%= @nombre %></p>
+	
 
-	<br/>
-	<div align="left">
-		<% if !session[:errores].nil? %>
-			<label label for="exampleInputEmail3" > errores </label>
-			<ul>
-			<% session[:errores].split(",").each do |a| %>
-            <li><%= a %></li>
-            </ul>
-            <% end %>
-        <%end %>
-	</div>
-	<div align="left">
-		<% if !session[:informe].nil? %>
-			<label label for="exampleInputEmail3"> informe:<%= session[:informe] %></label>
-		<% end %>
-	</div>
+	<form method="POST" action="mipagina">
+		 <%= csrf_token_field %>
+		 Establecer nuevo valor para nombre:
+		<input type="text" name="nombre" />
+		<input type="submit" value="enviar" id="boton_enviar"/>
+	</form>
+
 	</body>
 </html>
